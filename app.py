@@ -316,6 +316,8 @@ def show_user_page():
         ac = AlarmChecker(config)
         alarms = ac.get_alarms_for_user(username)
         maplist = list(map(lambda m: str(m), range(MAPIDS[0], MAPIDS[1] + 1)))
+        # Get page data
+        _, _, timeleft = get_pagedata()
         return flask.render_template('user.html',
                                      username=username,
                                      maplist=maplist,
@@ -324,7 +326,8 @@ def show_user_page():
                                      tm_login=tm_login,
                                      alarm_enabled=True if discord_id != "" else False,
                                      loginname=username,
-                                     finlist=build_fin_json()
+                                     finlist=build_fin_json(),
+                                     timeleft=timeleft
                                      )
     else:
         # TODO: Delete cookie here
@@ -374,6 +377,8 @@ def show_user_page_on_button():
         alarms = ac.get_alarms_for_user(username)
         discord_id = um.get_discord_id(username)
         tm_login = um.get_tm_login(username)
+        # Get page data
+        _, _, timeleft = get_pagedata()
         response = flask.make_response(flask.render_template('user.html',
                                                              username=username,
                                                              maplist=maplist,
@@ -382,7 +387,8 @@ def show_user_page_on_button():
                                                              tm_login=tm_login,
                                                              alarm_enabled=True if discord_id != "" else False,
                                                              loginname=username,
-                                                             finlist=build_fin_json()
+                                                             finlist=build_fin_json(),
+                                                             timeleft=timeleft
                                                              )
                                        )
         return response

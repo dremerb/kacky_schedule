@@ -1,15 +1,25 @@
 .server-card {
     /*background: gray;*/
-    margin: 12px;
-    margin-bottom: 30px;
+    margin: 12px 12px 30px;
     display: flex;
     flex-direction: row;
-    flex: 0 0 60%;
-    width: 60%;
+    width: 735px;
 
     background: rgba(164, 202, 254, 0.1);
     box-shadow: 0px 4px 30px rgba(183, 203, 255, 0.05);
     border-radius: 10px;
+}
+
+.server-card:nth-child(2) {
+    margin-left: 5vw;
+}
+
+.server-card:nth-child(4) {
+    margin-left: 15vw;
+}
+
+.server-card:nth-child(6) {
+    margin-left: 25vw;
 }
 
 .server-card-col {
@@ -17,11 +27,13 @@
     display: flex;
     flex-direction: column;
     flex-basis: auto;
+    width: 200px;
     /*background: blue;*/
 }
 
 .server-card-col:nth-child(2) {
     /*flex-grow: 2;*/
+    width: 335px;
 }
 
 .servertitle {
@@ -53,9 +65,7 @@
     display: flex;
     flex-grow: 1;
     flex-direction: row;
-    justify-content: flex-start;
-    justify-items: flex-start;
-    align-items: center;
+    align-items: flex-start;
     /*background: yellow;*/
 }
 
@@ -88,7 +98,9 @@
 .nextmaps {
     /*background: chartreuse;*/
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
+    margin-top: 10px;
 }
 
 .nextmap {
@@ -100,20 +112,31 @@
 
 .nextmap h3 {
     display:inline;
+    font-weight: 600;
 }
 
-.timeleft {
+.timeleft-cell {
     display: flex;
     /*background: silver;*/
     align-items: end;
-    flex-grow: 1;
+    flex-direction: column;
+
     margin-right: 10px;
     margin-bottom: 10px;
 }
 
-.timeleft h2 {
+.timeleft-cell h2 {
     display:inline;
     margin-left: 10px;
+    font-weight: 600;
+}
+
+.title h3 {
+    font-size: 1em;
+}
+
+.timeleft>time {
+
 }
 
 .current-map-finished-icon {

@@ -46,10 +46,10 @@
                 <h3><a href="/">Server Overview</a></h3>
             </div>
             <div class="menu-entry">
-                <h3><a href="">Search Schedule</a></h3>
+                <h3><a href="schedule">Search Schedule</a></h3>
             </div>
             <div class="menu-entry">
-                <h3><a href="">Leaderboards</a></h3>
+                <h3><a href="leaderboard">Leaderboard</a></h3>
             </div>
             <div class="menu-entry">
                 {% if loginname %}
@@ -58,6 +58,11 @@
                     <h3><a href="login">Login/Register</a></h3>
                 {% endif %}
             </div>
+            {% if loginname %}
+                <div class="menu-entry">
+                    <h3><a href="logout">Logout</a></h3>
+                </div>
+            {% endif %}
 
         </div>
 
@@ -83,8 +88,9 @@
                 {element: null, secondsPassed: 0, timelimit: 0}
             );
          </script>
+        {% set offset = 0 %}
         {% for serv in servs %}
-            <div class="server-card">
+            <div class="server-card" style="margin-left: {{ (loop.index - 1) * 10 }}%">
                 <div class="server-card-col">
                     <div class="servertitle">
                         <img class="icon-small" src="/static/bare-metal-server.svg"/>
@@ -96,9 +102,11 @@
                         </div>
                         <div class="mapnum-subcell">
                             <div class="mapnum">
-                                <span class="map-id current-map-id" data-mapid="{{ serv[1] }}">
-                                    <h1>{{ serv[1] }}</h1>
-                                </span>
+                                <h1>
+                                    <span class="map-id current-map-id" data-mapid="{{ serv[1] }}">
+                                        {{ serv[1] }}
+                                    </span>
+                                </h1>
                             </div>
                             <div class="fincheck">
                                 <div class="current-map-finished-icon finish-icon">

@@ -12,9 +12,9 @@ enable_stats_page: True # Turning this on provides a DDOS attack vector
 enable_discord_bot: True
 
 # KK META INFO
-compend: 30.01.2022 22:00
-min_mapid: 201
-max_mapid: 275
+compend: 30.01.2023 22:00
+min_mapid: 75
+max_mapid: 125
 # playlist parameter can have values ["linear", "custom"]
 # - "linear" for [min_mapid, ... max_mapid] on every server
 # - "custom" for different maps per server (e. g. colors/difficulties)

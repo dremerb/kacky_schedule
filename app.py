@@ -212,6 +212,7 @@ def show_login_page_on_button():
     logger.info(f"Connection from {userip}")
 
     udm = UserDataMngr(config)
+
     if flask.request.path == "/login":
         user = User(flask.request.form["login_usr"], config)
         # user wants to login

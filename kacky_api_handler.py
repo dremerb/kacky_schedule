@@ -86,7 +86,7 @@ class KackyAPIHandler:
         if any(map(lambda s: s.timeplayed < 0, self.servers.values())) or self.servers == {}:
             self.update_server_info()
 
-    def update_leaderbord(self):
+    def update_leaderboard(self):
         if not self.last_leader_update < datetime.datetime.now() - datetime.timedelta(minutes=10) and not self.leaderboard == []:
             # if last update is not older than one minute, use cached data
             self.logger.info("Use cached self.leaderboard.")
@@ -95,7 +95,7 @@ class KackyAPIHandler:
         self.logger.info("Updating self.leaderboard.")
         try:
             # TODO: change to actual api
-            #krdata = requests.get("https://kk.kackiestkacky.com/api/", params={"password": self.api_pwd}).json()
+            # krdata = requests.get("https://kk.kackiestkacky.com/api/", params={"password": self.api_pwd}).json()
             krdata = TEST_LEADERBOARD_RESPONSE
         except ConnectionError:
             self.logger.error("Could not connect to KK API!")
@@ -117,4 +117,4 @@ class KackyAPIHandler:
         self.last_leader_update = datetime.datetime.now()
 
     def get_leaderboard(self):
-        self.update_leaderbord()
+        self.update_leaderboard()

@@ -405,13 +405,15 @@ def show_leaderboard():
 
     # Get page data
     _, _, timeleft = get_pagedata()
+    # Get leaderboard data
+    api.update_leaderbord()
 
     if res:
         # user logged in
         loginname = current_user.get_id()
-        return flask.render_template("leaderboard.html", timeleft=timeleft, loginname=loginname)
+        return flask.render_template("leaderboard.html", timeleft=timeleft, leaderboard=api.leaderboard, loginname=loginname)
     else:
-        return flask.render_template("leaderboard.html", timeleft=timeleft)
+        return flask.render_template("leaderboard.html", timeleft=timeleft, leaderboard=api.leaderboard)
 
 
 

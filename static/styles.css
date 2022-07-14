@@ -73,6 +73,16 @@ a:hover {
     color: #b0b0b0;
 }
 
+a:visited {
+    text-decoration: none;
+    color: white;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #b0b0b0;
+}
+
 
 
 .left-bar {

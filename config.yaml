@@ -1,5 +1,5 @@
 # FLASK PARAMETERS
-port: 5005
+port: 5050
 bind_hosts: 0.0.0.0
 
 # APPLICATION PARAMETERS
@@ -12,7 +12,7 @@ enable_stats_page: True # Turning this on provides a DDOS attack vector
 enable_discord_bot: True
 
 # KK META INFO
-compend: 30.01.2023 22:00
+compend: 30.05.2022 20:00
 min_mapid: 75
 max_mapid: 125
 # playlist parameter can have values ["linear", "custom"]

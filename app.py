@@ -407,7 +407,7 @@ def show_leaderboard():
     # Get page data
     _, _, timeleft = get_pagedata()
     # Get leaderboard data
-    api.update_leaderbord()
+    api.update_leaderboard()
 
     if res:
         # user logged in

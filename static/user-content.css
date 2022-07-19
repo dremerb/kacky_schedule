@@ -1,0 +1,60 @@
+.username-container {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+}
+
+.desc-text {
+
+}
+
+.username-entry-subcell {
+    display: flex;
+    flex-direction: row;
+    margin: 10px 0;
+}
+
+input {
+    padding: 0.5rem 1rem;
+    font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1rem;
+    min-width: 5rem;
+}
+
+.alarm-container {
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    justify-content: space-around;
+    align-content: space-around;
+    margin-bottom: 20px;
+}
+
+.alarm-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.finned {
+    color: #00aa00;
+    margin: 0;
+}
+
+.unfinned {
+    color: red;
+    margin: 0;
+}
+
+.maplabel {
+    margin: 5px 0;
+    text-align: right;
+    width: 100px;
+    font-size: 1.3em;
+}
+
+.alarm-selector {
+    display: inline;
+    min-width: 1.3em;
+    font-size: 1.3em;
+}

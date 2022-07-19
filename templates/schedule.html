@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <meta
+            http-equiv="cache-control"
+            content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="expires" content="0"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;700&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='index-content.css') }}"
+    />
+    <link
+            rel="shortcut icon"
+            href="{{ url_for('static', filename='favicon.ico') }}"
+    >
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='styles-legacy.css') }}"
+    >
+    <title>KK7 Map Schedule</title>
+</head>
+<body>
+    <div class="left-bar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='KK_LOGO.png') }}">
+        </div>
+
+        <div class="menu">
+            <div class="menu-entry">
+                <h3><a href="/">Server Overview</a></h3>
+            </div>
+            <div class="menu-entry">
+                <h3><a href="schedule">Search Schedule</a></h3>
+            </div>
+            <div class="menu-entry">
+                <h3><a href="leaderboard">Leaderboard</a></h3>
+            </div>
+            <div class="menu-entry">
+                {% if loginname %}
+                    <h3><a href="user">{{ loginname }}</a></h3>
+                {% else %}
+                    <h3><a href="login">Login/Register</a></h3>
+                {% endif %}
+            </div>
+            {% if loginname %}
+                <div class="menu-entry">
+                    <h3><a href="logout">Logout</a></h3>
+                </div>
+            {% endif %}
+        </div>
+        <div class="countdown">
+            <h2>Countdown</h2>
+            <h3>{{ timeleft[0] }} Days</h3>
+            <h3>{{ timeleft[1] }} Hours</h3>
+            <h3>{{ timeleft[2] }} Minutes</h3>
+        </div>
+    </div>
+
+    <div class="content-area">
+        <h2><img class="icon" src="/static/search.svg"/>Search for a map</h2>
+            <p>
+                Find when a map will next be played. (Estimated time, real time
+                depends on server loading times)
+            </p>
+            <form id="map-search" method="POST">
+                <label for="map">Map #</label>
+                <div id="searchbar">
+                    <input type="text" name="map" placeholder="Enter here..."/>
+                    <button type="submit" name="search_btn">Search</button>
+                </div>
+            </form>
+            {% if searched == True %} {% if badinput == True %}
+                <p>Please provide a ID that is in the current map pool!</p>
+            {% else %}
+                <p>
+                    <strong>
+                        <!--
+                        --><span style="color: #a00">K</span
+                    ><!--
+                --><span style="color: #a60">a</span
+                    ><!--
+                --><span style="color: #aa0">ck</span
+                    ><!--
+                --><span style="color: #0a0">iest Kack</span
+                    ><!--
+                --><span style="color: #a00">y </span
+                    ><!--
+                --><span style="color: #0f4">#{{ searchtext }}</span>
+                    </strong>
+                    will next be played at:
+                </p>
+            {% endif %} {% endif %}
+            <div class="server-grid">
+                {% for d in deltas %}
+                    <div class="server-card">
+                        <h3 class="server-title">
+                            <img class="icon-small" src="/static/bare-metal-server.svg"/>
+                            <span
+                            >{{ d[1].split(" - ")[1]|safe }}</span
+                            >
+                        </h3>
+                        <p id="time-left-server">
+                            <span class="time-server-search">Next play time (yes, your timezone):</span>
+                            <span class="time"><script>
+                      date = new Date();
+                      now = date.getTime();
+                      juke = now + parseInt({{ d[0][0] }}) * 3600000 + parseInt({{ d[0][1] }}) * 60000;
+                      juke_date = new Date(juke);
+                      document.write(juke_date.getHours().toString().padStart(2, "0") + ":" + juke_date.getMinutes().toString().padStart(2, "0"));
+                  </script>
+                  </span>
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+    </div>
+</body>
+</html>

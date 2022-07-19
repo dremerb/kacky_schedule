@@ -23,222 +23,156 @@
             type="text/css"
             href="{{ url_for('static', filename='styles.css') }}"
     />
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link
+            rel="stylesheet"
+            type="text/css"
+            href="{{ url_for('static', filename='index-content.css') }}"
+    />
+    <link
+            rel="shortcut icon"
+            href="{{ url_for('static', filename='favicon.ico') }}"
+    >
     <title>KK7 Map Schedule</title>
 </head>
 <body>
-<div class="log-reg">
-    {% if loginname %}
-        <h4>Hello {{ loginname }}!</h4>
-        <a href="user">
-            <button type="submit">Settings</button>
-        </a>
-        <a href="logout">
-            <button type="submit" onclick="logout()">Logout</button>
-        </a>
-    {% else %}
-        <a href="login">
-            <button type="submit">Login</button>
-        </a>
-        <a href="register">
-            <button type="submit">Register</button>
-        </a>
-    {% endif %}
-</div>
-<div class="container">
-    <!-- TODO: change me to KK logo! -->
-    <img id="header-image" src="/static/KK_LOGO.png"/>
-    <h1 style="text-align: center; margin-bottom: 0">Map Schedule</h1>
 
-    {% if timeleft[3] == 1 %}
-        <p id="time-left">
-            <span id="time-title">Time left:</span>
+    <div class="left-bar">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='KK_LOGO.png') }}">
+        </div>
 
-            <span class="time">{{ timeleft[0] }}</span>
-            <span>Days</span>
+        <div class="menu">
+            <div class="menu-entry">
+                <h3><a href="/">Server Overview</a></h3>
+            </div>
+            <div class="menu-entry">
+                <h3><a href="schedule">Search Schedule</a></h3>
+            </div>
+            <div class="menu-entry">
+                <h3><a href="leaderboard">Leaderboard</a></h3>
+            </div>
+            <div class="menu-entry">
+                {% if loginname %}
+                    <h3><a href="user">{{ loginname }}</a></h3>
+                {% else %}
+                    <h3><a href="login">Login/Register</a></h3>
+                {% endif %}
+            </div>
+            {% if loginname %}
+                <div class="menu-entry">
+                    <h3><a href="logout">Logout</a></h3>
+                </div>
+            {% endif %}
 
-            <span class="time-divider"> / </span>
+        </div>
 
-            <span class="time">{{ timeleft[1] }}</span>
-            <span>Hours</span>
+        <div class="countdown">
+            <h2>Countdown</h2>
+            <h3>{{ timeleft[0] }} Days</h3>
+            <h3>{{ timeleft[1] }} Hours</h3>
+            <h3>{{ timeleft[2] }} Minutes</h3>
+        </div>
+    </div>
 
-            <span class="time-divider"> / </span>
 
-            <span class="time">{{ timeleft[2] }}</span>
-            <span>Minutes</span>
-        </p>
 
-    <section>
-        <h2>
-            <img class="icon" src="/static/content-delivery-network.svg"/>Current
-            Maps
-        </h2>
-        <div class="server-grid">
-            <script>
-                let counterElements = new Array(
-                    {element: null, secondsPassed: 0, timelimit: 0},
-                    {element: null, secondsPassed: 0, timelimit: 0},
-                    {element: null, secondsPassed: 0, timelimit: 0}
-                );
-            </script>
-            {% for serv in servs %}
-                <div class="server-card">
-                    <h3 class="server-title">
+
+
+
+
+    <div class="content-area">
+         <script>
+            let counterElements = new Array(
+                {element: null, secondsPassed: 0, timelimit: 0},
+                {element: null, secondsPassed: 0, timelimit: 0},
+                {element: null, secondsPassed: 0, timelimit: 0}
+            );
+         </script>
+        {% set offset = 0 %}
+        {% for serv in servs %}
+            <div class="server-card">
+                <div class="server-card-col">
+                    <div class="servertitle">
                         <img class="icon-small" src="/static/bare-metal-server.svg"/>
                         {{ serv[0].split(" - ")[1]|safe }}
-                    </h3>
-
-                    <div class="server-content">
-                        <div class="a">
-                            <p>
-                                <!--
-                                --><span style="color: #a00">K</span
-                            ><!--
-                          --><span style="color: #a60">a</span
-                            ><!--
-                          --><span style="color: #aa0">ck</span
-                            ><!--
-                          --><span style="color: #0a0">iest Kack</span
-                            ><!--
-                          --><span style="color: #a00">y </span
-                            ><!--
-                          -->
-                                <span class="map-id current-map-id" data-mapid="{{ serv[1] }}"
-                                      style="color: #0f4">#{{ serv[1] }}</span>
-                                {% if loginname %}
-                                    {% if serv[1] in finlist.mapids %}
-                                        <img class="current-map-finished-icon finish-icon" src="/static/check.svg"/>
-                                    {% else %}
-                                        <img class="current-map-finished-icon finish-icon" src="/static/x.svg"/>
-                                    {% endif %}
-                                {% endif %}
-                            </p>
+                    </div>
+                    <div class="mapname-cell">
+                        <div class="mapname">
+                            <h3>Kackiest<br>Kacky</h3>
                         </div>
-
-                        <div class="b">
-                            <div class="next-map-wrapper">
-                                {% for i in range(1,4) %}
-                                    <img class="next-map-icon" src="/static/chevron--right.svg"/>
-                                    <span class="map-id next-map-number hover-preview" data-mapid="{{ serv[3][i] }}"
-                                          style="color: #0f4"> #{{ serv[3][i] }}</span>
+                        <div class="mapnum-subcell">
+                            <div class="mapnum">
+                                <h1>
+                                    <span class="map-id current-map-id" data-mapid="{{ serv[1] }}">
+                                        {{ serv[1] }}
+                                    </span>
+                                </h1>
+                            </div>
+                            <div class="fincheck">
+                                <div class="current-map-finished-icon finish-icon">
                                     {% if loginname %}
-                                        {% if serv[3][i] in finlist.mapids %}
-                                            <img class="next-map-finished-icon finish-icon" src="/static/check.svg"/>
+                                        {% if serv[1] in finlist.mapids %}
+                                            <img class="current-map-finished-icon finish-icon" src="/static/check.svg"/>
                                         {% else %}
-                                            <img class="next-map-finished-icon finish-icon" src="/static/x.svg"/>
+                                            <img class="current-map-finished-icon finish-icon" src="/static/x.svg"/>
                                         {% endif %}
                                     {% endif %}
-                                {% endfor %}
+                                </div>
                             </div>
                         </div>
 
-                        <div class="c">
-                            <p>
-                                <span id="time-running"> Time left</span>
-                                <span id="id{{ loop.index }}"></span>
-                            </p>
-                        </div>
+                    </div>
+                </div>
+                <div class="server-card-col">
+                    <div class="mapimage">
+                        <img src="/static/mapthumbs/{{ serv[1] }}_small.jpg" />
+                    </div>
+                </div>
 
-                        <div class="d">
-                            <img src="/static/mapthumbs/{{ serv[1] }}_small.jpg" class="map-thumbnail">
+
+                <div class="server-card-col">
+                    <div class="nextmaps">
+                        {% for i in range(1,4) %}
+                            <div class="nextmap">
+                                <h3><span class="map-id next-map-number hover-preview" data-mapid="{{ serv[3][i] }}">
+                                    #{{ serv[3][i] }}</h3>
+                                </span>
+                                {% if loginname %}
+                                    {% if serv[3][i] in finlist.mapids %}
+                                        <img class="next-map-finished-icon finish-icon" src="/static/check.svg"/>
+                                    {% else %}
+                                        <img class="next-map-finished-icon finish-icon" src="/static/x.svg"/>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="timeleft-cell">
+                        <div class="title"><h3>Time left:</h3></div>
+                        <div class="time">
+                            <h2><span id="id{{ loop.index }}"></span></h2>
                         </div>
                     </div>
-
-                    <script>
-                        (() => {
-                            counterElements["{{ loop.index }}" - 1].element =
-                                document.getElementById("id{{ loop.index }}");
-                            counterElements["{{ loop.index }}" - 1].secondsPassed =
-                                parseInt("{{ serv[2] }}") - 23; //subtracting 20 seconds because xaseco starts counting early
-                            counterElements["{{ loop.index }}" - 1].timelimit =
-                                parseInt("{{ serv[4] }}") * 60;
-                        })();
-                    </script>
                 </div>
-
-            {% endfor %}
-        </div>
-    </section>
-    <section>
-        <h2><img class="icon" src="/static/search.svg"/>Search for a map</h2>
-        <p>
-            Find when a map will next be played. (Estimated time, real time
-            depends on server loading times)
-        </p>
-        <form id="map-search" method="POST">
-            <label for="map">Map #</label>
-            <div id="searchbar">
-                <input type="text" name="map" placeholder="Enter here..."/>
-                <button type="submit" name="search_btn">Search</button>
             </div>
-        </form>
-        {% if searched == True %} {% if badinput == True %}
-            <p>Please provide a ID that is in the current map pool!</p>
-        {% else %}
-            <p>
-                <strong>
-                    <!--
-                    --><span style="color: #a00">K</span
-                ><!--
-            --><span style="color: #a60">a</span
-                ><!--
-            --><span style="color: #aa0">ck</span
-                ><!--
-            --><span style="color: #0a0">iest Kack</span
-                ><!--
-            --><span style="color: #a00">y </span
-                ><!--
-            --><span style="color: #0f4">#{{ searchtext }}</span>
-                </strong>
-                will next be played at:
-            </p>
-        {% endif %} {% endif %}
-        <div class="server-grid">
-            {% for d in deltas %}
-                <div class="server-card">
-                    <h3 class="server-title">
-                        <img class="icon-small" src="/static/bare-metal-server.svg"/>
-                        <span
-                        >{{ d[1].split(" - ")[1]|safe }}</span
-                        >
-                    </h3>
-                    <p id="time-left-server">
-                        <span class="time-server-search">Next play time (yes, your timezone):</span>
-                        <span class="time"><script>
-                  date = new Date();
-                  now = date.getTime();
-                  juke = now + parseInt({{ d[0][0] }}) * 3600000 + parseInt({{ d[0][1] }}) * 60000;
-                  juke_date = new Date(juke);
-                  document.write(juke_date.getHours().toString().padStart(2, "0") + ":" + juke_date.getMinutes().toString().padStart(2, "0"));
-              </script>
-              </span>
-                    </p>
-                </div>
-            {% endfor %}
-        </div>
-    </section>
-    {% else %}
-        <p id="time-left">
-            <span>The Competition is over!</span>
-        </p>
-    {% endif %}
-</div>
+            <script>
+                (() => {
+                    counterElements["{{ loop.index }}" - 1].element =
+                        document.getElementById("id{{ loop.index }}");
+                    counterElements["{{ loop.index }}" - 1].secondsPassed =
+                        parseInt("{{ serv[2] }}") - 23; //subtracting 20 seconds because xaseco starts counting early
+                    counterElements["{{ loop.index }}" - 1].timelimit =
+                        parseInt("{{ serv[4] }}") * 60;
+                })();
+            </script>
+        {% endfor %}
+    </div>
 
-<footer>
-    <p>
-        © 2022 | corkscrew, adralonter and benslv | Thanks to Kackiest Kacky
-        Krew!
-    </p>
-    <iframe
-            style="margin-top: 4px"
-            src="https://ghbtns.com/github-btn.html?user=dremerb&repo=kk_schedule&type=watch&count=true&size=small&v=2"
-            frameborder="0"
-            scrolling="0"
-            width="100"
-            height="30"
-            title="Github Repo"
-    ></iframe>
-</footer>
+
+
+
+
+
 
 <div id="imagecontainer"></div>
 

@@ -112,7 +112,23 @@ def index():  # put application's code here
                                      )
 
 
-@app.route('/', methods=['POST'])
+@app.route('/schedule')
+def map_play_search():
+    # check if user is logged in
+    res = check_user_logged_in()
+
+    # Get page data
+    _, _, timeleft = get_pagedata()
+
+    if res:
+        # user logged in
+        loginname = current_user.get_id()
+        return flask.render_template("schedule.html", timeleft=timeleft, loginname=loginname)
+    else:
+        return flask.render_template("schedule.html", timeleft=timeleft)
+
+
+@app.route('/schedule', methods=['POST'])
 def on_map_play_search():
     """
     This gets called when a search is performed
@@ -144,7 +160,7 @@ def on_map_play_search():
         search_map_id = int(search_map_id)
     except ValueError:
         # input is not a integer, return error message
-        return flask.render_template('index.html',
+        return flask.render_template('schedule.html',
                                      servs=serverinfo,
                                      curtime=curtimestr,
                                      searched=True, badinput=True,
@@ -155,7 +171,7 @@ def on_map_play_search():
     # check if input is in current map pool
     if search_map_id < MAPIDS[0] or search_map_id > MAPIDS[1]:
         # not in current map pool
-        return flask.render_template('index.html',
+        return flask.render_template('schedule.html',
                                      servs=serverinfo,
                                      curtime=curtimestr,
                                      searched=True, badinput=True,
@@ -170,7 +186,7 @@ def on_map_play_search():
     # remove all None from servers which do not have map
     deltas = [i for i in deltas if i[0]]
 
-    return flask.render_template('index.html',
+    return flask.render_template('schedule.html',
                                  servs=serverinfo,
                                  curtime=curtimestr,
                                  searched=True, searchtext=search_map_id,
@@ -254,19 +270,23 @@ def show_login_page():
     res = check_user_logged_in()
     # user is not logged in
     if not check_user_logged_in():
+        # Get page data
+        _, _, timeleft = get_pagedata()
         if flask.request.path == "/login":
             if "forward" in flask.request.args:
                 # user tried accessing a blocked page. let them log in and forward them
                 return flask.render_template('login.html', mode="l", forward=flask.request.args["forward"])
             # user wants to login
-            return flask.render_template('login.html', mode="l")
+            return flask.render_template('login.html', mode="l", timeleft=timeleft)
         else:
             # user wants to register
-            return flask.render_template('login.html', mode="r")
+            return flask.render_template('login.html', mode="r", timeleft=timeleft)
     # user is already logged in
     elif res:
+        # Get page data
+        _, _, timeleft = get_pagedata()
         return flask.render_template('login.html', mode="l", state=True,
-                                     loginname=current_user.get_id())
+                                     loginname=current_user.get_id(), timeleft=timeleft)
     else:
         # should never happen, but for good measure, log out user and show login page
         return flask.redirect(flask.url_for("logout"))
@@ -302,6 +322,8 @@ def show_user_page():
         ac = AlarmChecker(config)
         alarms = ac.get_alarms_for_user(username)
         maplist = list(map(lambda m: str(m), range(MAPIDS[0], MAPIDS[1] + 1)))
+        # Get page data
+        _, _, timeleft = get_pagedata()
         return flask.render_template('user.html',
                                      username=username,
                                      maplist=maplist,
@@ -310,7 +332,8 @@ def show_user_page():
                                      tm_login=tm_login,
                                      alarm_enabled=True if discord_id != "" else False,
                                      loginname=username,
-                                     finlist=build_fin_json()
+                                     finlist=build_fin_json(),
+                                     timeleft=timeleft
                                      )
     else:
         # TODO: Delete cookie here
@@ -360,6 +383,8 @@ def show_user_page_on_button():
         alarms = ac.get_alarms_for_user(username)
         discord_id = um.get_discord_id(username)
         tm_login = um.get_tm_login(username)
+        # Get page data
+        _, _, timeleft = get_pagedata()
         response = flask.make_response(flask.render_template('user.html',
                                                              username=username,
                                                              maplist=maplist,
@@ -368,7 +393,8 @@ def show_user_page_on_button():
                                                              tm_login=tm_login,
                                                              alarm_enabled=True if discord_id != "" else False,
                                                              loginname=username,
-                                                             finlist=build_fin_json()
+                                                             finlist=build_fin_json(),
+                                                             timeleft=timeleft
                                                              )
                                        )
         return response
@@ -376,6 +402,27 @@ def show_user_page_on_button():
         # logout to be safe, idk how we got here
         logout_user()
         return flask.render_template("error.html", error="Something went wrong on the user page, idk. Do :prayge:")
+
+
+@app.route('/leaderboard')
+def show_leaderboard():
+    # check if user is logged in
+    res = check_user_logged_in()
+
+    # Get page data
+    _, _, timeleft = get_pagedata()
+    # Get leaderboard data
+    api.update_leaderboard()
+
+    if res:
+        # user logged in
+        loginname = current_user.get_id()
+        return flask.render_template("leaderboard.html", timeleft=timeleft, leaderboard=api.leaderboard, loginname=loginname)
+    else:
+        return flask.render_template("leaderboard.html", timeleft=timeleft, leaderboard=api.leaderboard)
+
+
+
 
 
 @app.route('/logout')

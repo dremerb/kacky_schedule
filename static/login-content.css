@@ -1,0 +1,20 @@
+button {
+  border: 0;
+  padding: 0.3rem 3rem;
+  font-family: "Roboto", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 5rem;
+
+  background-color: rgb(136, 255, 0);
+  box-shadow: 0 0 5px rgba(68, 255, 0, 0.5), 0 0 10px rgba(68, 255, 0, 0.7);
+  z-index: 3;
+
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #6a0;
+}
+
